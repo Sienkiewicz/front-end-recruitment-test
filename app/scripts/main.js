@@ -76,4 +76,14 @@
   }
 
   // Your custom JavaScript goes here
+
+  // TASK 1
+
+  const img = document.querySelector('#imgBacon').outerHTML
+  const container = document.querySelector('#overview')
+  const btn = document.querySelector('#btnBacon')
+
+  btn.addEventListener('click', () => {
+    container.insertAdjacentHTML('beforeend', img)
+  })
 })();
