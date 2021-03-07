@@ -86,4 +86,94 @@
   btn.addEventListener('click', () => {
     container.insertAdjacentHTML('beforeend', img)
   })
+
+  // TASK 3
+  const submitBtn = document.querySelector('#submit')
+  const errorEmail = document.querySelector('#emailError')
+  const cardNumberError = document.querySelector('#cardnumberError')
+  const expMonthAndYearError = document.querySelector('#expMonthAndYearError')
+  const cvvError = document.querySelector('#cvvError')
+
+  const form = document.checkoutForm
+  const email = form.email
+  const cardNumber = form.cardNumber
+  const month = form.month
+  const year = form.year
+  const cvv = form.cvv
+
+  const fields = [
+    { el: email, errorEl: errorEmail },
+    { el: cardNumber, errorEl: cardNumberError },
+    { el: month, errorEl: expMonthAndYearError },
+    { el: year, errorEl: expMonthAndYearError },
+    { el: cvv, errorEl: cvvError }
+  ]
+
+  let validations = {}
+
+  fields.forEach(field => {
+    validations[field.el.name] = true
+    addOnChangeEventListener(field.el, field.errorEl)
+  })
+
+  submitBtn.addEventListener('click', function (e) {
+    e.preventDefault()
+
+    validateEmail()
+    validateCardNumber()
+    validatePresence(month)
+    validatePresence(year)
+    validateCvv()
+    Object.values(validations).find(value => value === false) === undefined && alert('Everything is great!')
+
+  })
+
+  function addOnChangeEventListener(el, errorEl) {
+    el.addEventListener('input', () => {
+      if (errorEl.style.display === 'block') {
+        errorEl.style.display = 'none'
+      }
+    })
+  }
+
+  // all separate fn of the validation
+
+  function validateEmail() {
+    const isValid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email.value)
+    validations.email = onStyleDisplay(errorEmail, isValid)
+  }
+
+  function validateCardNumber() {
+    const isValid = /^((4\d{3})|(5[1-5]\d{2}))(-?|\040?)(\d{4}(-?|\040?)){3}|^(3[4,7]\d{2})(-?|\040?)\d{6}(-?|\040?)\d{5}/i.test(cardNumber.value)
+    validations.cardNumber = onStyleDisplay(cardNumberError, isValid)
+  }
+
+  function validatePresence(str) {
+    const numbers = str.value.split('')
+    if (+numbers[0] === 0) {
+      if (+numbers[1] === 0) {
+        expMonthAndYearError.style.display = 'block'
+        validations[str.name] = false
+        return
+      }
+      validations[str.name] = true
+      return
+    }
+    validations[str.name] = true
+  }
+
+  function validateCvv() {
+    const isValid = /^\d{3}$/i.test(cvv.value)
+    validations.cvv = onStyleDisplay(cvvError, isValid)
+  }
+
+  // UTILS
+
+  function onStyleDisplay(errorEl, isValid) {
+    if (!isValid) {
+      errorEl.style.display = 'block'
+    }
+    return isValid
+  }
+
 })();
