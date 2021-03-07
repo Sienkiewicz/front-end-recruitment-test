@@ -1,0 +1,236 @@
+$small-radius: 3px;
+$bg-color: #fff;
+$light-grey: #f2f2f2;
+
+@mixin header_p {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 0.8rem;
+}
+
+@mixin outline {
+  outline: $light-grey;
+  outline-width: 1px;
+  outline-offset: -10px;
+  outline-style: dashed;
+}
+
+@mixin border-dashed {
+  border: 1px dashed $light-grey;
+}
+
+#btnBacon {
+  border: 1px solid black;
+
+  &:hover,
+  &:focus {
+    border: 2px solid black;
+  }
+}
+
+.fa,
+label {
+  font-size: 0.8rem;
+  padding: 0 4px;
+}
+
+.row {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  justify-content: space-between;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.col-35 {
+  flex: 35%;
+}
+
+.col-65 {
+  min-width: 65%;
+  flex: 65%;
+}
+
+.col-35,
+.col-65,
+.payment-container {
+  padding: 0 10px;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: $bg-color;
+  margin-bottom: 20px;
+  padding: 5px;
+  box-shadow: 1px 1px 5px 0 #ccc;
+  border-radius: $small-radius;
+
+  label {
+    margin-bottom: 5px;
+    display: block;
+    font-weight: 600;
+  }
+
+  .error {
+    position: absolute;
+    color: red;
+    bottom: -1rem;
+    font-size: 0.8rem;
+  }
+
+  input:focus:invalid {
+    box-shadow: inset 0 0 8px 1px red;
+  }
+}
+
+.input-container-50 {
+  min-width: calc(50% - 5px);
+}
+
+.divider {
+  width: 10px;
+}
+
+.container {
+  background-color: $light-grey;
+  padding: 5px 20px 15px 20px;
+  border: 1px solid $light-grey;
+  border-radius: $small-radius;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.payment-container {
+  max-width: 65%;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 5px;
+  background-color: $bg-color;
+  font-size: 1.2rem;
+
+  ::placeholder {
+    font-size: 1.2rem;
+  }
+
+  &:focus {
+    background: $light-grey;
+  }
+}
+
+select {
+  appearance: none;
+}
+
+.text-row {
+  display: flex;
+  padding-top: 10px;
+  align-items: center;
+
+  :first-child {
+    background-color: black;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    color: $bg-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+  h2 {
+    @include header_p();
+    margin: 0;
+  }
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4caf50;
+  color: $bg-color;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  width: 100%;
+  border-radius: $small-radius;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+
+  &:hover,
+  &:focus {
+    background-color: #45a049;
+  }
+  &:focus {
+    box-shadow: 0 0 8px 2px #4caf50;
+  }
+}
+
+.exp-month-and-year {
+  display: flex;
+  height: 100%;
+  #month,
+  #year {
+    width: 50px;
+    text-align-last: center;
+  }
+
+  p {
+    height: 100%;
+    margin-bottom: 0;
+  }
+}
+
+.order {
+  @include outline;
+  background-color: $bg-color;
+  padding: 20px;
+
+  .itemOfOrder {
+    display: inline;
+  }
+
+  p:first-child,
+  :last-child {
+    @include header_p();
+  }
+  hr {
+    @include border-dashed();
+  }
+  a {
+    color: black;
+  }
+
+  .price,
+  .total {
+    float: right;
+  }
+
+  .total {
+    font-size: 1.5rem;
+  }
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (and change the direction - make the "cart" column go on top) */
+@media (max-width: 800px) {
+  .row {
+    flex-direction: column-reverse;
+  }
+  .col-25 {
+    margin-bottom: 20px;
+  }
+  .payment-container {
+    max-width: none;
+  }
+}
