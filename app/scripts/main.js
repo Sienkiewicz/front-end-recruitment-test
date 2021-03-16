@@ -17,31 +17,33 @@
  *
  */
 /* eslint-env browser */
-(function() {
-  'use strict';
+;(function () {
+  'use strict'
 
   // Check to make sure service workers are supported in the current browser,
   // and that the current page is accessed from a secure origin. Using a
   // service worker from an insecure origin will trigger JS console errors. See
   // http://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features
 
-  const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
-    // [::1] is the IPv6 localhost address.
-    window.location.hostname === '[::1]' ||
-    // 127.0.0.1/8 is considered localhost for IPv4.
-    window.location.hostname.match(
-      /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-    )
-  );
+  const isLocalhost = Boolean(
+    window.location.hostname === 'localhost' ||
+      // [::1] is the IPv6 localhost address.
+      window.location.hostname === '[::1]' ||
+      // 127.0.0.1/8 is considered localhost for IPv4.
+      window.location.hostname.match(
+        /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+      )
+  )
 
   if (
-    'serviceWorker' in navigator
-    && (window.location.protocol === 'https:' || isLocalhost)
+    'serviceWorker' in navigator &&
+    (window.location.protocol === 'https:' || isLocalhost)
   ) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(function(registration) {
+    navigator.serviceWorker
+      .register('service-worker.js')
+      .then(function (registration) {
         // updatefound is fired if service-worker.js changes.
-        registration.onupdatefound = function() {
+        registration.onupdatefound = function () {
           // updatefound is also fired the very first time the SW is installed,
           // and there's no need to prompt for a reload at that point.
           // So check here to see if the page is already controlled,
@@ -49,131 +51,144 @@
           if (navigator.serviceWorker.controller) {
             // The updatefound event implies that registration.installing is set
             // https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#service-worker-container-updatefound-event
-            const installingWorker = registration.installing;
+            const installingWorker = registration.installing
 
-            installingWorker.onstatechange = function() {
+            installingWorker.onstatechange = function () {
               switch (installingWorker.state) {
-              case 'installed':
-                // At this point, the old content will have been purged and the
-                // fresh content will have been added to the cache.
-                // It's the perfect time to display a "New content is
-                // available; please refresh." message in the page's interface.
-                break;
+                case 'installed':
+                  // At this point, the old content will have been purged and the
+                  // fresh content will have been added to the cache.
+                  // It's the perfect time to display a "New content is
+                  // available; please refresh." message in the page's interface.
+                  break
 
-              case 'redundant':
-                throw new Error('The installing ' +
-                    'service worker became redundant.');
+                case 'redundant':
+                  throw new Error(
+                    'The installing ' + 'service worker became redundant.'
+                  )
 
-              default:
-                  // Ignore
+                default:
+                // Ignore
               }
-            };
+            }
           }
-        };
-      }).catch(function(e) {
-        console.error('Error during service worker registration:', e);
-      });
+        }
+      })
+      .catch(function (e) {
+        console.error('Error during service worker registration:', e)
+      })
   }
 
-  // Your custom JavaScript goes here
+  // // Your custom JavaScript goes here
 
-  // TASK 1
+  // // TASK 1
 
-  const img = document.querySelector('#imgBacon').outerHTML
-  const container = document.querySelector('#overview')
-  const btn = document.querySelector('#btnBacon')
+  // const img = document.querySelector('#imgBacon').outerHTML
+  // const container = document.querySelector('#overview')
+  // const btn = document.querySelector('#btnBacon')
 
-  btn.addEventListener('click', () => {
-    container.insertAdjacentHTML('beforeend', img)
-  })
+  // btn.addEventListener('click', () => {
+  //   container.insertAdjacentHTML('beforeend', img)
+  // })
 
-  // TASK 3
-  const submitBtn = document.querySelector('#submit')
-  const errorEmail = document.querySelector('#emailError')
-  const cardNumberError = document.querySelector('#cardnumberError')
-  const expMonthAndYearError = document.querySelector('#expMonthAndYearError')
-  const cvvError = document.querySelector('#cvvError')
+  // // TASK 3
+  // const submitBtn = document.querySelector('#submit')
+  // const errorEmail = document.querySelector('#emailError')
+  // const cardNumberError = document.querySelector('#cardnumberError')
+  // const expMonthAndYearError = document.querySelector('#expMonthAndYearError')
+  // const cvvError = document.querySelector('#cvvError')
 
-  const form = document.checkoutForm
-  const email = form.email
-  const cardNumber = form.cardNumber
-  const month = form.month
-  const year = form.year
-  const cvv = form.cvv
+  // const form = document.querySelector('#checkoutForm')
+  // const lname = document.querySelector('#lname')
+  // const email = form.email
+  // const cardNumber = form.cardNumber
+  // const month = form.month
+  // const year = form.year
+  // const cvv = form.cvv
 
-  const fields = [
-    { el: email, errorEl: errorEmail },
-    { el: cardNumber, errorEl: cardNumberError },
-    { el: month, errorEl: expMonthAndYearError },
-    { el: year, errorEl: expMonthAndYearError },
-    { el: cvv, errorEl: cvvError }
-  ]
+  // console.log(form)
 
-  let validations = {}
 
-  fields.forEach(field => {
-    validations[field.el.name] = true
-    addOnChangeEventListener(field.el, field.errorEl)
-  })
+  // const fields = [
+  //   { el: email, errorEl: errorEmail },
+  //   { el: cardNumber, errorEl: cardNumberError },
+  //   { el: month, errorEl: expMonthAndYearError },
+  //   { el: year, errorEl: expMonthAndYearError },
+  //   { el: cvv, errorEl: cvvError },
+  // ]
 
-  submitBtn.addEventListener('click', function (e) {
-    e.preventDefault()
+  // let validations = {}
 
-    validateEmail()
-    validateCardNumber()
-    validatePresence(month)
-    validatePresence(year)
-    validateCvv()
-    Object.values(validations).find(value => value === false) === undefined && alert('Everything is great!')
+  // fields.forEach(field => {
+  //   validations[field.el.name] = true
+  //   addOnChangeEventListener(field.el, field.errorEl)
+  // })
 
-  })
+  // submitBtn.addEventListener('click', function (e) {
 
-  function addOnChangeEventListener(el, errorEl) {
-    el.addEventListener('input', () => {
-      if (errorEl.style.display === 'block') {
-        errorEl.style.display = 'none'
-      }
-    })
-  }
+  //   alert('fuck')
+  //   e.preventDefault()
 
-  // all separate fn of the validation
+  //   validateEmail()
+  //   validateCardNumber()
+  //   validatePresence(month)
+  //   validatePresence(year)
+  //   validateCvv()
+  //   Object.values(validations).find(value => value === false) === undefined &&
+  //     alert('Everything is great!')
+  // })
 
-  function validateEmail() {
-    const isValid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email.value)
-    validations.email = onStyleDisplay(errorEmail, isValid)
-  }
+  // function addOnChangeEventListener(el, errorEl) {
+  //   el.addEventListener('input', () => {
+  //     if (errorEl.style.display === 'block') {
+  //       errorEl.style.display = 'none'
+  //     }
+  //   })
+  // }
 
-  function validateCardNumber() {
-    const isValid = /^((4\d{3})|(5[1-5]\d{2}))(-?|\040?)(\d{4}(-?|\040?)){3}|^(3[4,7]\d{2})(-?|\040?)\d{6}(-?|\040?)\d{5}/i.test(cardNumber.value)
-    validations.cardNumber = onStyleDisplay(cardNumberError, isValid)
-  }
+  // // all separate fn of the validation
 
-  function validatePresence(str) {
-    const numbers = str.value.split('')
-    if (+numbers[0] === 0) {
-      if (+numbers[1] === 0) {
-        expMonthAndYearError.style.display = 'block'
-        validations[str.name] = false
-        return
-      }
-      validations[str.name] = true
-      return
-    }
-    validations[str.name] = true
-  }
+  // function validateEmail() {
+  //   const isValid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
+  //     email.value
+  //   )
+  //   validations.email = onStyleDisplay(errorEmail, isValid)
+  // }
 
-  function validateCvv() {
-    const isValid = /^\d{3}$/i.test(cvv.value)
-    validations.cvv = onStyleDisplay(cvvError, isValid)
-  }
+  // function validateCardNumber() {
+  //   const isValid = /^((4\d{3})|(5[1-5]\d{2}))(-?|\040?)(\d{4}(-?|\040?)){3}|^(3[4,7]\d{2})(-?|\040?)\d{6}(-?|\040?)\d{5}/i.test(
+  //     cardNumber.value
+  //   )
+  //   validations.cardNumber = onStyleDisplay(cardNumberError, isValid)
+  // }
 
-  // UTILS
+  // function validatePresence(str) {
+  //   const numbers = str.value.split('')
+  //   if (+numbers[0] === 0) {
+  //     if (+numbers[1] === 0) {
+  //       expMonthAndYearError.style.display = 'block'
+  //       validations[str.name] = false
+  //       return
+  //     }
+  //     validations[str.name] = true
+  //     return
+  //   }
+  //   validations[str.name] = true
+  // }
 
-  function onStyleDisplay(errorEl, isValid) {
-    if (!isValid) {
-      errorEl.style.display = 'block'
-    }
-    return isValid
-  }
+  // function validateCvv() {
+  //   const isValid = /^\d{3}$/i.test(cvv.value)
+  //   validations.cvv = onStyleDisplay(cvvError, isValid)
+  // }
 
-})();
+  // // UTILS
+
+  // function onStyleDisplay(errorEl, isValid) {
+  //   if (!isValid) {
+  //     errorEl.style.display = 'block'
+  //   }
+  //   return isValid
+  // }
+
+  
+})()

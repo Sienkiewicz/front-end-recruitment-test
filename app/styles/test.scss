@@ -38,6 +38,7 @@ label {
   display: -ms-flexbox; /* IE10 */
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .col {
@@ -53,6 +54,9 @@ label {
 .col-65 {
   min-width: 65%;
   flex: 65%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .col-35,
@@ -63,6 +67,7 @@ label {
 
 .input-container {
   position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
   background-color: $bg-color;
@@ -89,9 +94,6 @@ label {
   }
 }
 
-.input-container-50 {
-  min-width: calc(50% - 5px);
-}
 
 .divider {
   width: 10px;
@@ -107,8 +109,8 @@ label {
   margin-bottom: 20px;
 }
 
-.payment-container {
-  max-width: 65%;
+.half {
+  width: calc(50% - 5px);
 }
 
 input,
@@ -232,5 +234,8 @@ select {
   }
   .payment-container {
     max-width: none;
+  }
+  .half {
+    width: 100%;
   }
 }
